@@ -365,10 +365,12 @@ class _HomeScreenState extends State<HomeScreen> {
       AspectRatio(
         aspectRatio: 1.35,
         child: Swiper(
+          fade: 0.2,
           loop: false,
           controller: _mainController.pageController,
           viewportFraction: 0.65,
           scale: 0.9,
+          autoplay: true,
           onIndexChanged: (value) =>
               _mainController.currentPageIndex.value = value,
           itemBuilder: (context, index) {
@@ -380,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           },
-          itemCount: 3,
+          itemCount: 10,
         ),
       ),
     ];

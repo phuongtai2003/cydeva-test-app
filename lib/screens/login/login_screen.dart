@@ -1,39 +1,31 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/controllers/login_controller.dart';
 import 'package:test_app/global_colors.dart';
 import 'package:test_app/route_generator.dart';
-import 'package:test_app/service/login_service.dart';
 import 'package:test_app/widgets/custom_button.dart';
 import 'package:test_app/widgets/custom_text_form_field.dart';
 import 'package:test_app/widgets/horizontal_dash_text.dart';
 import 'package:test_app/widgets/social_button.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends GetView<LoginController> {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final LoginService _loginService = LoginService();
-  final TextEditingController _phoneNumController = TextEditingController();
-  final LoginController _loginController = Get.put(LoginController());
-
-  @override
-  void dispose() {
-    super.dispose();
-    _phoneNumController.dispose();
+  void login() async {
+    final res = await controller.login();
+    if (res) {
+      Get.toNamed(RouteGenerator.otp);
+    } else {
+      Get.snackbar('Error', 'Phone number not found');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHUD(child: _buildBody(context));
+    return _buildBody(context);
   }
 
   Widget _buildBody(BuildContext cntext) {
@@ -79,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 16),
                         child: CustomTextFormField(
-                          controller: _phoneNumController,
+                          controller: controller.phoneNumController,
                           numberOnly: true,
                           hintText: 'Phone Number',
                         ),
@@ -89,18 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           horizontal: 24,
                         ),
                         child: CustomButton(
-                          onPressed: () async {
-                            _loginController.isLoading.value = true;
-                            final phoneNum = _phoneNumController.text;
-                            final value = await _loginService
-                                .checkPhoneNumberExist(phoneNum: phoneNum);
-                            if (value) {
-                              Get.toNamed(RouteGenerator.otp);
-                            } else {
-                              Get.snackbar('Error', 'Phone number not found');
-                            }
-                            _loginController.isLoading.value = false;
-                          },
+                          onPressed: login,
                           buttonColor: GlobalColors.iconColor,
                           text: 'Login',
                         ),
@@ -133,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Obx(
                   () {
-                    if (_loginController.isLoading.value) {
+                    if (controller.isLoading.value) {
                       return Positioned.fill(
                         child: Container(
                           color: GlobalColors.greyColor.withOpacity(0.2),

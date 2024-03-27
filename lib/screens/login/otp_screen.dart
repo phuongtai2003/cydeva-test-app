@@ -5,48 +5,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/controllers/otp_controller.dart';
 import 'package:test_app/global_colors.dart';
 import 'package:test_app/route_generator.dart';
-import 'package:test_app/service/otp_service.dart';
 import 'package:test_app/widgets/custom_button.dart';
 import 'package:test_app/widgets/otp_input_text_field.dart';
 import 'package:test_app/widgets/return_appbar_btn.dart';
 
-class OtpScreen extends StatefulWidget {
+class OtpScreen extends GetView<OtpController> {
   const OtpScreen({super.key});
 
-  @override
-  State<OtpScreen> createState() => _OtpScreenState();
-}
-
-class _OtpScreenState extends State<OtpScreen> {
-  final List<TextEditingController> otpControllers = List.generate(
-    6,
-    (index) => TextEditingController(),
-  );
-  final OtpService otpService = OtpService();
-
-  final OtpController otpController = Get.put(
-    OtpController(),
-    permanent: false,
-  );
-
   void _verifyOtp() async {
-    final otpText = otpControllers.fold<String>(
-      '',
-      (previousValue, element) => previousValue + element.text,
-    );
-    otpController.isLoading.value = true;
-    final res = await otpService.otpVerification(otp: otpText);
+    final res = await controller.verifyOtp();
     if (res) {
       Get.offAllNamed(RouteGenerator.success);
     } else {
       Get.snackbar(
         'Error',
         'Invalid OTP',
-        backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     }
-    otpController.isLoading.value = false;
   }
 
   @override
@@ -67,7 +43,6 @@ class _OtpScreenState extends State<OtpScreen> {
         child: ReturnAppBarButton(
           onPressed: () {
             Get.back();
-            Get.deleteAll(force: true);
           },
         ),
       ),
@@ -105,8 +80,8 @@ class _OtpScreenState extends State<OtpScreen> {
                       height: 16,
                     ),
                     Obx(() {
-                      int minutes = otpController.countDownTimer.value ~/ 60;
-                      int seconds = otpController.countDownTimer.value % 60;
+                      int minutes = controller.countDownTimer.value ~/ 60;
+                      int seconds = controller.countDownTimer.value % 60;
                       String minutesStr = minutes.toString().padLeft(2, '0');
                       String secondsStr = seconds.toString().padLeft(2, '0');
                       return SizedBox(
@@ -144,7 +119,7 @@ class _OtpScreenState extends State<OtpScreen> {
               ),
               Obx(
                 () {
-                  if (otpController.isLoading.value) {
+                  if (controller.isLoading.value) {
                     return Container(
                       color: GlobalColors.greyColor.withOpacity(0.2),
                       child: const Center(
@@ -195,7 +170,7 @@ class _OtpScreenState extends State<OtpScreen> {
       children: [
         Expanded(
           child: OtpInputTextField(
-            controller: otpControllers[0],
+            controller: controller.otpControllers[0],
             onChanged: (value) {
               if (value.length == 1) {
                 FocusScope.of(cntext).nextFocus();
@@ -208,22 +183,7 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
         Expanded(
           child: OtpInputTextField(
-            controller: otpControllers[1],
-            onChanged: (value) {
-              if (value.length == 1) {
-                FocusScope.of(cntext).nextFocus();
-              } else if (value.isEmpty) {
-                FocusScope.of(cntext).previousFocus();
-              }
-            },
-          ),
-        ),
-        const SizedBox(
-          width: 16,
-        ),
-        Expanded(
-          child: OtpInputTextField(
-            controller: otpControllers[2],
+            controller: controller.otpControllers[1],
             onChanged: (value) {
               if (value.length == 1) {
                 FocusScope.of(cntext).nextFocus();
@@ -238,7 +198,7 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
         Expanded(
           child: OtpInputTextField(
-            controller: otpControllers[3],
+            controller: controller.otpControllers[2],
             onChanged: (value) {
               if (value.length == 1) {
                 FocusScope.of(cntext).nextFocus();
@@ -253,7 +213,7 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
         Expanded(
           child: OtpInputTextField(
-            controller: otpControllers[4],
+            controller: controller.otpControllers[3],
             onChanged: (value) {
               if (value.length == 1) {
                 FocusScope.of(cntext).nextFocus();
@@ -268,7 +228,22 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
         Expanded(
           child: OtpInputTextField(
-            controller: otpControllers[5],
+            controller: controller.otpControllers[4],
+            onChanged: (value) {
+              if (value.length == 1) {
+                FocusScope.of(cntext).nextFocus();
+              } else if (value.isEmpty) {
+                FocusScope.of(cntext).previousFocus();
+              }
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 16,
+        ),
+        Expanded(
+          child: OtpInputTextField(
+            controller: controller.otpControllers[5],
             onChanged: (value) {
               if (value.length == 1) {
                 FocusScope.of(cntext).nextFocus();

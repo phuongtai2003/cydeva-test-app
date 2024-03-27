@@ -1,23 +1,24 @@
-import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
+import 'package:test_app/data_repository/login_data_repository.dart';
+import 'package:test_app/models/phone_verification/request/phone_verification_request.dart';
 
+@lazySingleton
 class LoginService {
-  final Dio _dio = Dio();
+  final LoginDataRepository _loginDataRepository;
+
+  LoginService(this._loginDataRepository);
 
   Future<bool> checkPhoneNumberExist({required String phoneNum}) async {
     try {
-      String num = "+84${phoneNum.substring(1)}";
-
-      final res = await _dio.post(
-        'http://103.11.199.134:8001/api/v1/auth/user/check/exist/',
-        data: {
-          'phone_number': num,
-        },
+      final res = await _loginDataRepository.login(
+        request: PhoneVerificationRequest(phoneNumber: phoneNum),
       );
-      if (res.data['status_code'] == 204 || res.data['status_code'] == 200) {
+      if (res.statusCode == 204 || res.statusCode == 200) {
         return true;
       }
       return false;
     } catch (e) {
+      print('Hello $e');
       return false;
     }
   }

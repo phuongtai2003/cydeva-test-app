@@ -53,6 +53,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
+      extendBody: true,
       bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
@@ -60,12 +61,15 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildBottomNavBar(BuildContext cntext) {
     return Obx(
       () => BottomAppBar(
-        color: Colors.white,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
-        notchMargin: 8,
+        shadowColor: Colors.transparent,
+        notchMargin: 12,
         shape: const CircularNotchedRectangle(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24).copyWith(top: 12),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24,
+          ).copyWith(top: 12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                 isSelected: _mainController.currentNavIndex.value == 1,
               ),
               const SizedBox(
-                width: 24,
+                width: 20,
               ),
               BottomNavItem(
                 icon: SvgPicture.asset(
