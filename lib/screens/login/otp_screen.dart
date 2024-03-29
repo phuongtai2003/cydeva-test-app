@@ -13,16 +13,16 @@ class OtpScreen extends GetView<OtpController> {
   const OtpScreen({super.key});
 
   void _verifyOtp() async {
-    final res = await controller.verifyOtp();
-    if (res) {
-      Get.offAllNamed(RouteGenerator.success);
-    } else {
-      Get.snackbar(
-        'Error',
-        'Invalid OTP',
-        colorText: Colors.white,
-      );
-    }
+    // final res = await controller.verifyOtp();
+    // if (res) {
+    Get.offAllNamed(RouteGenerator.success);
+    // } else {
+    //   Get.snackbar(
+    //     'Error',
+    //     'Invalid OTP',
+    //     colorText: Colors.white,
+    //   );
+    // }
   }
 
   @override

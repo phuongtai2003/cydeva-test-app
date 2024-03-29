@@ -6,7 +6,6 @@ part 'general_response.g.dart';
 class GeneralResponse<T> {
   @JsonKey(name: 'status_code')
   final int statusCode;
-  @JsonKey(name: 'message')
   final String message;
   final T data;
 

@@ -15,12 +15,12 @@ class LoginScreen extends GetView<LoginController> {
   LoginScreen({super.key});
 
   void login() async {
-    final res = await controller.login();
-    if (res) {
-      Get.toNamed(RouteGenerator.otp);
-    } else {
-      Get.snackbar('Error', 'Phone number not found');
-    }
+    // final res = await controller.login();
+    // if (res) {
+    Get.toNamed(RouteGenerator.otp);
+    // } else {
+    //   Get.snackbar('Error', 'Phone number not found');
+    // }
   }
 
   @override

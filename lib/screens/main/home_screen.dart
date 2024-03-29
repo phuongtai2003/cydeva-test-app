@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
       image: Image.asset(
         'assets/images/news_holder_1.png',
         fit: BoxFit.cover,
+        width: double.infinity,
       ),
       title: "Enjoy your trip",
       description: "Tips to help you have memorable moments",
@@ -85,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       image: Image.asset(
         'assets/images/news_holder_2.png',
         fit: BoxFit.cover,
+        width: double.infinity,
       ),
       title: "Tool preparation",
       description: "What tools you need to prepare",
@@ -93,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
       image: Image.asset(
         'assets/images/news_holder_4.png',
         fit: BoxFit.cover,
+        width: double.infinity,
       ),
       title: "Travel articles",
       description: 'Catch weather information quickly',
@@ -101,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
       image: Image.asset(
         'assets/images/news_holder_3.png',
         fit: BoxFit.cover,
+        width: double.infinity,
       ),
       title: "Make a plan",
       description: '',
